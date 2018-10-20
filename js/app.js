@@ -86,17 +86,21 @@ function addObject(model, location, scene)
     var obj = BABYLON.SceneLoader.ImportMesh("",
 					     model,
 					     "",
-					     scene);
+					     scene,
+              );
     obj.absolutePosition = location;
     return obj;
 }
 
 var scene = createScene();
 // Build 5 / 2.5 / 5 room
-var room = buildRoom(5, 2.5, 5);
+var room = buildRoom(5, 2.5, 5, scene);
 var chair = addObject("http://img.wfrcdn.com/docresources/37311/108/1089869.glb",
-		      new BABYLON.Vector3(0,-25,0),
+		      new BABYLON.Vector3(0,0,-2),
 		      scene);
+
+
+
 
 engine.runRenderLoop(function () {
     scene.render();
