@@ -95,6 +95,17 @@ function addFurnishing(model, location, scene)
     return furnishings[furnishings.length-1];
 }
 
+function removeFurnishing(mesh, scene) {
+    // recursively delete specified furnishing
+    if (mesh._children){
+	mesh._children.forEach(function(child){
+	    removeFurnishing(child);
+	});
+    }
+    scene.removeMesh(mesh);
+}
+
+
 var scene = createScene();
 // Build 5 / 2.5 / 5 room
 var room = buildRoom(5, 2.5, 5, scene);
