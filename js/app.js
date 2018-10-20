@@ -88,11 +88,11 @@ function addFurnishing(model, location, scene)
     BABYLON.SceneLoader.ImportMesh(
 	"", model,"",scene,
 	function (meshes, particles, skeletons) {
-	    const mesh = meshes[0];
-	    mesh.setPosition(location);
+	    var mesh = meshes[0];
+	    mesh.setPositionWithLocalVector(location);
 	    furnishings.push(mesh);
 	});
-    return furnishings[furnishings.length];
+    return furnishings[furnishings.length-1];
 }
 
 var scene = createScene();
