@@ -81,25 +81,26 @@ function buildRoom(width, height, depth, scene) {
     wall2.receiveShadows = true;
 }
 
-function addObject(model, location, scene)
+furnishings = {}
+
+function addFurnishing(model, location, scene)
 {
-    var obj = BABYLON.SceneLoader.ImportMesh("",
-					     model,
-					     "",
-					     scene,
-              );
-    obj.absolutePosition = location;
-    return obj;
+    BABYLON.SceneLoader.ImportMesh(
+	"", model,"",scene,
+	function (meshes, particles, skeletons) {
+	    const mesh = meshes[0];
+	    mesh.setPosition(location);
+	    furnishings.push(mesh);
+	});
+    return furnishings[furnishings.length];
 }
 
 var scene = createScene();
 // Build 5 / 2.5 / 5 room
 var room = buildRoom(5, 2.5, 5, scene);
-var chair = addObject("http://img.wfrcdn.com/docresources/37311/108/1089869.glb",
-		      new BABYLON.Vector3(0,0,-2),
-		      scene);
-
-
+var chair = addFurnishing("http://img.wfrcdn.com/docresources/37311/108/1089869.glb",
+			  new BABYLON.Vector3(0,0,0),
+			  scene);
 
 
 engine.runRenderLoop(function () {
