@@ -17,7 +17,7 @@ function createScene()
     universalCamera.setPosition(new BABYLON.Vector3(0, 1.2, 2.5))
 
     // Place hemispherical light (no shadows)
-    var hemiLight = new BABYLON.HemisphericLight("hemiLight"
+    var hemiLight = new BABYLON.HemisphericLight("hemiLight",
 						 new BABYLON.Vector3(0, 1, 0),
 						 scene);
 
