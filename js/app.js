@@ -92,27 +92,25 @@ function addFurnishing(model, location, scene)
 	    mesh.setPositionWithLocalVector(location);
 	    furnishings.push(mesh);
 	});
-    return furnishings[furnishings.length-1];
 }
 
 function removeFurnishing(mesh, scene) {
-    // recursively delete specified furnishing
-    if (mesh._children){
-	mesh._children.forEach(function(child){
-	    removeFurnishing(child, scene);
-	});
-    }
-    scene.removeMesh(mesh);
+    var index = furnishings.indexOf(mesh);
+    if (index == -1) return;
+    
+    mesh.getChildMeshes().forEach(function(mesh) {
+	scene.removeMesh(mesh);
+    });
+    furnishings.splice(index, 1);
 }
 
 
 var scene = createScene();
 // Build 5 / 2.5 / 5 room
 var room = buildRoom(5, 2.5, 5, scene);
-var chair = addFurnishing("http://img.wfrcdn.com/docresources/37311/108/1089869.glb",
-			  new BABYLON.Vector3(0,0,0),
-			  scene);
-
+addFurnishing("http://img.wfrcdn.com/docresources/37311/108/1089869.glb",
+	      new BABYLON.Vector3(0,0,0),
+	      scene);
 
 engine.runRenderLoop(function () {
     scene.render();
