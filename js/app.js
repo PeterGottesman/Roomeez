@@ -28,59 +28,57 @@ function createScene()
     light.specular = new BABYLON.Color3(0, 1, 0);
     var shadowGenerator = new BABYLON.ShadowGenerator(1024, light);
 
-    function buildRoom(width, height, depth) {
-        var widthDelta = width / 2;
-        var heightDelta = height / 2;
-        var depthDelta = depth / 2;
-
-        // Place a floor
-        var ground = new BABYLON.MeshBuilder.CreateGround("gd",
-            {
-                width: width,
-                height: depth,
-                subdivisions: 1
-            },
-            scene);
-        ground.receiveShadows = true;
-
-        // Place a back drop
-        var backWall = BABYLON.MeshBuilder.CreatePlane("backwall", {
-            width: width,
-            height: height,
-            sideOrientation: BABYLON.Mesh.DOUBLESIDE
-        }, scene);
-        backWall.setAbsolutePosition(new BABYLON.Vector3(0, heightDelta, -1 * depthDelta));
-        backWall.receiveShadows = true;
-
-        // Place the right wall
-        var wall = BABYLON.MeshBuilder.CreatePlane("wall", {
-            width: depth,
-            height: height,
-            sideOrientation: BABYLON.Mesh.DOUBLESIDE
-        }, scene);
-        wall.setAbsolutePosition(new BABYLON.Vector3(-1 * widthDelta, heightDelta, 0));
-        wall.rotation = new BABYLON.Vector3(0, Math.PI / 2, 0);
-        wall.receiveShadows = true;
-
-        // Place the left wall
-        var wall2 = BABYLON.MeshBuilder.CreatePlane("wall2", {
-            width: depth,
-            height: height,
-            sideOrientation: BABYLON.Mesh.DOUBLESIDE
-        }, scene);
-        wall2.setAbsolutePosition(new BABYLON.Vector3(widthDelta, heightDelta, 0));
-        wall2.rotation = new BABYLON.Vector3(0, Math.PI / 2, 0);
-        wall2.receiveShadows = true;
-    }
-
-    // Build 5 / 2.5 / 5 room
-    buildRoom(5, 2.5, 5);
     universalCamera.attachControl(canvas, true);
 
     // do something with the meshes and skeletons
     // particleSystems are always null for glTF assets
 
     return scene;
+}
+
+function buildRoom(width, height, depth, scene) {
+    var widthDelta = width / 2;
+    var heightDelta = height / 2;
+    var depthDelta = depth / 2;
+
+    // Place a floor
+    var ground = new BABYLON.MeshBuilder.CreateGround("gd",
+        {
+            width: width,
+            height: depth,
+            subdivisions: 1
+        },
+        scene);
+    ground.receiveShadows = true;
+
+    // Place a back drop
+    var backWall = BABYLON.MeshBuilder.CreatePlane("backwall", {
+        width: width,
+        height: height,
+        sideOrientation: BABYLON.Mesh.DOUBLESIDE
+    }, scene);
+    backWall.setAbsolutePosition(new BABYLON.Vector3(0, heightDelta, -1 * depthDelta));
+    backWall.receiveShadows = true;
+
+    // Place the right wall
+    var wall = BABYLON.MeshBuilder.CreatePlane("wall", {
+        width: depth,
+        height: height,
+        sideOrientation: BABYLON.Mesh.DOUBLESIDE
+    }, scene);
+    wall.setAbsolutePosition(new BABYLON.Vector3(-1 * widthDelta, heightDelta, 0));
+    wall.rotation = new BABYLON.Vector3(0, Math.PI / 2, 0);
+    wall.receiveShadows = true;
+
+    // Place the left wall
+    var wall2 = BABYLON.MeshBuilder.CreatePlane("wall2", {
+        width: depth,
+        height: height,
+        sideOrientation: BABYLON.Mesh.DOUBLESIDE
+    }, scene);
+    wall2.setAbsolutePosition(new BABYLON.Vector3(widthDelta, heightDelta, 0));
+    wall2.rotation = new BABYLON.Vector3(0, Math.PI / 2, 0);
+    wall2.receiveShadows = true;
 }
 
 function addObject(model, location, scene)
@@ -94,6 +92,8 @@ function addObject(model, location, scene)
 }
 
 var scene = createScene();
+// Build 5 / 2.5 / 5 room
+var room = buildRoom(5, 2.5, 5);
 var chair = addObject("http://img.wfrcdn.com/docresources/37311/108/1089869.glb",
 		      new BABYLON.Vector3(0,-25,0),
 		      scene);
