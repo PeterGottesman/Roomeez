@@ -83,13 +83,13 @@ function buildRoom(width, height, depth, scene) {
 
 function addObject(model, location, scene)
 {
-    var obj = BABYLON.SceneLoader.ImportMesh("",
-					     model,
-					     "",
-					     scene,
-              );
-    obj.absolutePosition = location;
-    return obj;
+    var mesh;
+    BABYLON.SceneLoader.ImportMesh(
+	"", model,"",scene,
+	function (newMeshes, particles, skeletons) {
+	    mesh = newMeshes[0];
+	});
+    return mesh;
 }
 
 var scene = createScene();
