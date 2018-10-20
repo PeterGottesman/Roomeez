@@ -73,18 +73,20 @@ function createScene()
     return scene;
 }
 
-function addObject(scene)
+function addObject(model, location, scene)
 {
     var obj = BABYLON.SceneLoader.ImportMesh("",
-					       "assets/chair.glb",
-					       "",
-					       scene);
-    obj.absolutePosition = new BABYLON.Vector3(0, -25, 0)
+					     model,
+					     "",
+					     scene);
+    obj.absolutePosition = location;
     return obj;
 }
 
 var scene = createScene();
-addObject(scene);
+var chair = addObject("http://img.wfrcdn.com/docresources/37311/108/1089869.glb",
+		      new BABYLON.Vector3(0,-25,0),
+		      scene);
 
 engine.runRenderLoop(function () {
     scene.render();
