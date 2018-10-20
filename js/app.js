@@ -99,7 +99,7 @@ function removeFurnishing(mesh, scene) {
     // recursively delete specified furnishing
     if (mesh._children){
 	mesh._children.forEach(function(child){
-	    removeFurnishing(child);
+	    removeFurnishing(child, scene);
 	});
     }
     scene.removeMesh(mesh);
