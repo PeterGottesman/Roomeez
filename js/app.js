@@ -75,7 +75,7 @@ function createScene()
 
 function addObject(scene)
 {
-    var obj = BABYLON.SceneLoader.ImportMesh("ChairMesh",
+    var obj = BABYLON.SceneLoader.ImportMesh("",
 					       "assets/chair.glb",
 					       "",
 					       scene);
