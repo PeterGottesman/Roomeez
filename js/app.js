@@ -81,7 +81,7 @@ function buildRoom(width, height, depth, scene) {
     wall2.receiveShadows = true;
 }
 
-furnishings = {}
+var furnishings = []
 
 function addFurnishing(model, location, scene)
 {
