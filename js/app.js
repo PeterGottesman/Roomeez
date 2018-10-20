@@ -69,6 +69,8 @@ function createScene()
 
     // do something with the meshes and skeletons
     // particleSystems are always null for glTF assets
+
+    return scene;
 }
 
 function addObject(scene)
