@@ -264,11 +264,15 @@ window.addEventListener("resize", function () {
 var client = algoliasearch("D02UAI4X7Z", "0e65f8d6c291cf064313d4de6f5dd9eb");
 var index = client.initIndex("models");
 
-function findFurniture(search, facets)
+function findFurniture(search, facet_filters)
 {
     const query = {
 	"query": search,
-	"facets": facets
+	"facets": [
+	    "class_names",
+	    "primary_style"
+	],
+	"facetFilters": facet_filters
     };
     return index.search(query).then(function(result){
 	return result;
