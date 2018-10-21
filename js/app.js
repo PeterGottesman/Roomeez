@@ -1,7 +1,5 @@
 var canvas = document.getElementById("canvas");
 var engine = new BABYLON.Engine(canvas, true);
-createGUI()
-
 
 var client = algoliasearch("D02UAI4X7Z", "0e65f8d6c291cf064313d4de6f5dd9eb");
 var index = client.initIndex("models");
@@ -401,6 +399,7 @@ var diningroom = [
 ];
 
 var scene = buildLivingRoom("Modern", scene);
+createGUI()
 
 engine.runRenderLoop(function () {
     scene.render();
