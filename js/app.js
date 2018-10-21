@@ -1,13 +1,19 @@
 var canvas = document.getElementById("canvas");
 var engine = new BABYLON.Engine(canvas, true);
+renderer = new BABYLON.Engine(canvas, true);
 
-function createScene()
-{
+canvas.style.width = '60%';
+canvas.style.height = '60%';
+
+function createScene() {
     var scene = new BABYLON.Scene(engine);
+    return scene;
+}
 
+function makeCamera(scene) {
     var universalCamera = new BABYLON.ArcRotateCamera("Camera", 0, 0, 2, new BABYLON.Vector3(0, 0, 0), scene);
     universalCamera.speed = 0.1;
-    universalCamera.fov = 1.2;
+    universalCamera.fov = 1.0;
     universalCamera.minZ = 0.01;
     universalCamera.setTarget(BABYLON.Vector3.Zero());
     universalCamera.position = new BABYLON.Vector3(0, 0, 2);
@@ -15,26 +21,9 @@ function createScene()
     scene.activeCamera = universalCamera;
     scene.activeCamera.attachControl(canvas);
     universalCamera.setPosition(new BABYLON.Vector3(0, 1.2, 2.5));
-
-    // Place hemispherical light (no shadows)
-    var hemiLight = new BABYLON.HemisphericLight("hemiLight",
-						 new BABYLON.Vector3(0, 1, 0),
-						 scene);
-
-    // Place point light (shadows)
-    var light = new BABYLON.PointLight("pointlight",
-				       new BABYLON.Vector3(-2.5, 4, 8),
-				       scene);
-    light.specular = new BABYLON.Color3(0, 1, 0);
-    var shadowGenerator = new BABYLON.ShadowGenerator(1024, light);
-
-    universalCamera.attachControl(canvas, true);
-
-    // do something with the meshes and skeletons
-    // particleSystems are always null for glTF assets
-
-    return scene;
+    return universalCamera;
 }
+
 
 function buildRoom(width, height, depth, scene) {
     var widthDelta = width / 2;
@@ -46,15 +35,29 @@ function buildRoom(width, height, depth, scene) {
         {
             width: width,
             height: depth,
-            subdivisions: 1
+            subdivisions: 10
         },
         scene);
     ground.receiveShadows = true;
+
+    // Place a ceiling
+    /*
+    var ceiling = new BABYLON.MeshBuilder.CreatePlane("cl",
+        {
+            width: width,
+            height: depth,
+            subdivisions: 10,
+            sideOrientation: BABYLON.Mesh.DOUBLESIDE
+        }, scene);
+    ceiling.setAbsolutePosition(new BABYLON.Vector3(0, height, 0));
+    ceiling.rotation = new BABYLON.Vector3(Math.PI / 2, 0, 0);
+    ceiling.receiveShadows = true;*/
 
     // Place a back drop
     var backWall = BABYLON.MeshBuilder.CreatePlane("backwall", {
         width: width,
         height: height,
+        subdivisions: 10,
         sideOrientation: BABYLON.Mesh.DOUBLESIDE
     }, scene);
     backWall.setAbsolutePosition(new BABYLON.Vector3(0, heightDelta, -1 * depthDelta));
@@ -64,6 +67,7 @@ function buildRoom(width, height, depth, scene) {
     var wall = BABYLON.MeshBuilder.CreatePlane("wall", {
         width: depth,
         height: height,
+        subdivisions: 10,
         sideOrientation: BABYLON.Mesh.DOUBLESIDE
     }, scene);
     wall.setAbsolutePosition(new BABYLON.Vector3(-1 * widthDelta, heightDelta, 0));
@@ -74,43 +78,279 @@ function buildRoom(width, height, depth, scene) {
     var wall2 = BABYLON.MeshBuilder.CreatePlane("wall2", {
         width: depth,
         height: height,
+        subdivisions: 10,
         sideOrientation: BABYLON.Mesh.DOUBLESIDE
     }, scene);
     wall2.setAbsolutePosition(new BABYLON.Vector3(widthDelta, heightDelta, 0));
     wall2.rotation = new BABYLON.Vector3(0, Math.PI / 2, 0);
     wall2.receiveShadows = true;
+
+    //Attach Texture to Ground
+    var scale = 5.0;
+
+    /*
+    var lhCOLOR = "assets\\Light_Hardwood\\Wood_Floor_006_COLOR.jpg";
+    var lhOCC = "assets\\Light_Hardwood\\Wood_Floor_006_OCC.jpg";
+    var lhNORM = "assets\\Light_Hardwood\\Wood_Floor_006_NORM.jpg";
+    var lhROUGH =   "assets\\Light_Hardwood\\Wood_Floor_006_ROUGH.jpg";
+    var mat0 = new BABYLON.StandardMaterial(ground, scene);
+    mat0.diffuseTexture = new BABYLON.Texture(lhCOLOR, scene);
+    mat0.diffuseTexture.uScale = scale;
+    mat0.diffuseTexture.vScale = scale;
+    mat0.ambientTexture = new BABYLON.Texture(lhOCC, scene);
+    mat0.ambientTexture.uScale = scale;
+    mat0.ambientTexture.vScale = scale;
+    mat0.bumpTexture = new BABYLON.Texture(lhNORM, scene);
+    mat0.bumpTexture.uScale = scale;
+    mat0.bumpTexture.vScale = scale;
+    mat0.metallicRoughnessTexture = new BABYLON.Texture(lhROUGH, scene);
+    mat0.metallicRoughnessTexture.uScale = scale;
+    mat0.metallicRoughnessTexture.vScale = scale;
+    mat0.specularPower = 400.0;
+    ground.material = mat0;*/
+
+//Attach Texture to Walls
+
+    /*var mat1 = new BABYLON.StandardMaterial(backWall, scene);
+    mat1.diffuseTexture = new BABYLON.Texture("assets\\Wallpaper\\Wallpaper_001_COLOR.jpg", scene);
+    mat1.diffuseTexture.uScale = scale;
+    mat1.diffuseTexture.vScale = scale;
+    mat1.bumpTexture = new BABYLON.Texture("assets\\Wallpaper\\Wallpaper_001_NRM.jpg", scene);
+    mat1.bumpTexture.uScale = scale;
+    mat1.bumpTexture.vScale = scale;
+    mat1.ambientTexture = new BABYLON.Texture("assets\\Wallpaper\\Wallpaper_001_OCC.jpg", scene);
+    mat1.ambientTexture.uScale = scale;
+    mat1.ambientTexture.vScale = scale;
+    mat1.specularTexture = new BABYLON.Texture("assets\\Wallpaper\\Wallpaper_001_SPEC.jpg", scene);
+    mat1.specularTexture = scale;
+    mat1.specularTexture = scale;*/
+
+    /*var mat1 = new BABYLON.StandardMaterial(backWall, scene);
+    mat1.diffuseTexture = new BABYLON.Texture("assets\\Graffiti_Wall\\Old_Graffiti_Wall_001_COLOR.jpg", scene);
+    mat1.diffuseTexture.uScale = scale;
+    mat1.diffuseTexture.vScale = scale;
+    mat1.bumpTexture = new BABYLON.Texture("assets\\Graffiti_Wall\\Old_Graffiti_Wall_001_NORM.jpg", scene);
+    mat1.bumpTexture.uScale = scale;
+    mat1.bumpTexture.vScale = scale;
+    mat1.ambientTexture = new BABYLON.Texture("assets\\Graffiti_Wall\\Old_Graffiti_Wall_001_OCC.jpg", scene);
+    mat1.ambientTexture.uScale = scale;
+    mat1.ambientTexture.vScale = scale;
+    mat1.metallicRoughnessTexture = new BABYLON.Texture("assets\\Graffiti_Wall\\Old_Graffiti_Wall_001_ROUGH.jpg", scene);
+    mat1.metallicRoughnessTexture = scale;
+    mat1.metallicRoughnessTexture = scale;
+    mat1.specularPower = 100000.0;*/
+
+    var mat1 = new BABYLON.StandardMaterial(backWall, scene);
+    mat1.diffuseTexture = new BABYLON.Texture("assets\\Plaster\\Plaster_002_COLOR.jpg", scene);
+    mat1.diffuseTexture.uScale = scale;
+    mat1.diffuseTexture.vScale = scale;
+    mat1.bumpTexture = new BABYLON.Texture("assets\\Plaster\\Plaster_002_NORM.jpg", scene);
+    mat1.bumpTexture.uScale = scale;
+    mat1.bumpTexture.vScale = scale;
+    mat1.ambientTexture = new BABYLON.Texture("assets\\Plaster\\Plaster_002_OCC.jpg", scene);
+    mat1.ambientTexture.uScale = scale;
+    mat1.ambientTexture.vScale = scale;
+    mat1.metallicRoughnessTexture = new BABYLON.Texture("assets\\Plaster\\Plaster_002_ROUGH.jpg", scene);
+    mat1.metallicRoughnessTexture = scale;
+    mat1.metallicRoughnessTexture = scale;
+    mat1.specularPower = 400.0;
+
+    // ceiling.material = mat1;
+
+
+    var dhCOLOR = "assets\\Dark_Hardwood\\Wood_Floor_007_COLOR.jpg";
+    var dhNORM = "assets\\Dark_Hardwood\\Wood_Floor_007_OCC.jpg";
+    var dhOCC = "assets\\Dark_Hardwood\\Wood_Floor_007_NORM.jpg";
+    var dhROUGH = "assets\\Dark_Hardwood\\Wood_Floor_007_ROUGH.jpg";
+
+    var mat0 = new BABYLON.StandardMaterial(ground, scene);
+    mat0.diffuseTexture = new BABYLON.Texture(dhCOLOR, scene);
+    mat0.diffuseTexture.uScale = scale;
+    mat0.diffuseTexture.vScale = scale;
+    mat0.ambientTexture = new BABYLON.Texture(dhNORM, scene);
+    mat0.ambientTexture.uScale = scale;
+    mat0.ambientTexture.vScale = scale;
+    mat0.bumpTexture = new BABYLON.Texture(dhOCC, scene);
+    mat0.bumpTexture.uScale = scale;
+    mat0.bumpTexture.vScale = scale;
+    mat0.metallicRoughnessTexture = new BABYLON.Texture(dhROUGH, scene);
+    mat0.metallicRoughnessTexture.uScale = scale;
+    mat0.metallicRoughnessTexture.vScale = scale;
+    mat0.specularPower = 800.0;
+    ground.material = mat0;
+
+    var cCOLOR = "assets\\Concrete\\Concrete_011_COLOR.jpg";
+    var cNORM = "assets\\Concrete\\Concrete_011_NORM.jpg";
+    var cOCC = "assets\\Concrete\\Concrete_011_OCC.jpg";
+    var cROUGH = "assets\\Concrete\\Concrete_011_ROUGH.jpg";
+
+    var mat3 = new BABYLON.StandardMaterial(backWall, scene);
+    mat3.diffuseTexture = new BABYLON.Texture(cCOLOR, scene);
+    mat3.diffuseTexture.uScale = scale;
+    mat3.diffuseTexture.vScale = scale;
+    mat3.bumpTexture = new BABYLON.Texture(cNORM, scene);
+    mat3.bumpTexture.uScale = scale;
+    mat3.bumpTexture.vScale = scale;
+    mat3.ambientTexture = new BABYLON.Texture(cOCC, scene);
+    mat3.ambientTexture.uScale = scale;
+    mat3.ambientTexture.vScale = scale;
+    mat3.metallicRoughnessTexture = new BABYLON.Texture(cROUGH, scene);
+    mat3.metallicRoughnessTexture = scale;
+    mat3.metallicRoughnessTexture = scale;
+    mat3.specularPower = 400.0;
+    wall.material = mat3;
+    wall2.material = mat3;
+
+    var bwCOLOR = "assets\\Brick_Wall\\Brick_Wall_011_COLOR.jpg";
+    var bwNORM = "assets\\Brick_Wall\\Brick_Wall_011_NORM.jpg";
+    var bwOCC = "assets\\Brick_Wall\\Brick_Wall_011_OCC.jpg";
+    var bwROUGH = "assets\\Brick_Wall\\Brick_Wall_011_ROUGH.jpg";
+
+    var mat2 = new BABYLON.StandardMaterial(backWall, scene);
+    mat2.diffuseTexture = new BABYLON.Texture(bwCOLOR, scene);
+    mat2.diffuseTexture.uScale = scale;
+    mat2.diffuseTexture.vScale = scale;
+    mat2.bumpTexture = new BABYLON.Texture(bwNORM, scene);
+    mat2.bumpTexture.uScale = scale;
+    mat2.bumpTexture.vScale = scale;
+    mat2.ambientTexture = new BABYLON.Texture(bwOCC, scene);
+    mat2.ambientTexture.uScale = scale;
+    mat2.ambientTexture.vScale = scale;
+    mat2.metallicRoughnessTexture = new BABYLON.Texture(bwROUGH, scene);
+    mat2.metallicRoughnessTexture.uScale = scale;
+    mat2.metallicRoughnessTexture.vScale = scale;
+    mat2.specularPower = 10000.0;
+
+    backWall.material = mat2;
 }
 
-var furnishings = []
+function addHemiLight(name, intensity, location, scene) {
+    var hemiLight = new BABYLON.HemisphericLight(name,
+        location,
+        scene);
+    hemiLight.intensity = intensity;
+    hemiLight.specular = new BABYLON.Color3(1, 1, 0);
+    hemiLight.specularPower = 2;
+    hemiLight.diffuse = new BABYLON.Color3(1, 1, 1);
+    hemiLight.groundColor = new BABYLON.Color3(0, 0, 0);
+}
 
-function addFurnishing(model, location, scene)
-{
+function addPointLight(name, intensity, location, scene) {
+    // Place point light (shadows)
+    let light = new BABYLON.PointLight(name, location, scene);
+    light.intensity = intensity;
+    light.specularColor = new BABYLON.Color3(1, 1, 0);
+    light.diffuseColor = new BABYLON.Color3(1, 1, 0);
+    return light;
+
+}
+
+function addDirectLight(name, intensity, angle, scene) {
+    let light = new BABYLON.DirectionalLight(name, angle, scene);
+    light.intensity = intensity;
+    light.specularColor = new BABYLON.Color3(1, 1, 0);
+    light.diffuseColor = new BABYLON.Color3(1, 1, 0);
+    return light;
+}
+
+var furnishings = [];
+
+function addFurnishing(model, location, rotation, scene) {
     BABYLON.SceneLoader.ImportMesh(
-	"", model,"",scene,
-	function (meshes, particles, skeletons) {
-	    var mesh = meshes[0];
-	    mesh.setPositionWithLocalVector(location);
-	    furnishings.push(mesh);
-	});
+        "", model, "", scene,
+        function (meshes, particles, skeletons) {
+            const mesh = meshes[0];
+            mesh.setPositionWithLocalVector(location);
+            mesh.rotation = rotation;
+            furnishings.push(mesh);
+        });
 }
 
 function removeFurnishing(mesh, scene) {
     var index = furnishings.indexOf(mesh);
     if (index == -1) return;
-    
-    mesh.getChildMeshes().forEach(function(mesh) {
-	scene.removeMesh(mesh);
+
+    mesh.getChildMeshes().forEach(function (mesh) {
+        scene.removeMesh(mesh);
     });
     furnishings.splice(index, 1);
 }
 
+function addShadows(light) {
+    let shadowGenerator = new BABYLON.ShadowGenerator(1024, light);
+    shadowGenerator.useBlurExponentialShadowMap = true;
+    for (let mesh in furnishings) {
+        shadowGenerator.addShadowCaster(mesh);
+        shadowGenerator.getShadowMap().renderList.push(mesh);
+    }
+    return shadowGenerator
+}
 
 var scene = createScene();
+var uniCam = makeCamera(scene);
+uniCam.attachControl(canvas, true);
+// var orb = addGlowingOrb(scene);
+
+//var light = addPointLight("pointLight", .2, new BABYLON.Vector3(0, 2, 2), scene);
+var light0 = addPointLight("point0", .2, new BABYLON.Vector3(2, 2, 2), scene);
+var light1 = addPointLight("point1", .2, new BABYLON.Vector3(-2, 2, 2), scene);
+var hemiLight = addHemiLight('hemi0', 1.1, new BABYLON.Vector3(0, 2, 2), scene);
 // Build 5 / 2.5 / 5 room
-var room = buildRoom(5, 2.5, 5, scene);
-addFurnishing("http://img.wfrcdn.com/docresources/37311/108/1089869.glb",
-	      new BABYLON.Vector3(0,0,0),
-	      scene);
+var room = buildRoom(4, 2, 4, scene);
+// Table
+addFurnishing("http://img.wfrcdn.com/docresources/0/139/1396970.glb",
+    new BABYLON.Vector3(0, 0, 0),
+    new BABYLON.Vector3(0, Math.PI / 2, 0),
+    scene);
+// Rug
+addFurnishing("http://img.wfrcdn.com/docresources/37306/108/1087161.glb",
+    new BABYLON.Vector3(0, 0, 0),
+    new BABYLON.Vector3(0, Math.PI / 2, 0),
+    scene);
+
+// Sofa
+addFurnishing("http://img.wfrcdn.com/docresources/36985/114/1140392.glb",
+    new BABYLON.Vector3(-1.45, 0, 0),
+    new BABYLON.Vector3(0, Math.PI / -2, 0),
+    scene);
+
+// Sofa
+addFurnishing("http://img.wfrcdn.com/docresources/36985/114/1140392.glb",
+    new BABYLON.Vector3(1.45, 0, 0),
+    new BABYLON.Vector3(0, Math.PI / 2, 0),
+    scene);
+
+// Light
+addFurnishing("http://img.wfrcdn.com/docresources/0/142/1425254.glb",
+    new BABYLON.Vector3(-1.4, 0, -1.45),
+    new BABYLON.Vector3(0, Math.PI, 0),
+    scene);
+
+// TV Stand
+addFurnishing("http://img.wfrcdn.com/docresources/37306/108/1087335.glb",
+    new BABYLON.Vector3(0, 0, -1.45),
+    new BABYLON.Vector3(0, 0, 0),
+    scene);
+
+// Throw Pillow Left
+addFurnishing("http://img.wfrcdn.com/docresources/25210/83/831740.glb",
+    new BABYLON.Vector3(-1.4, .5, -.25),
+    new BABYLON.Vector3(Math.PI/-3, Math.PI/-4, 0),
+    scene);
+
+
+var vls = new BABYLON.VolumetricLightScatteringPostProcess('vls', { postProcessRatio: 1.0, passRatio: 0.5 },
+    uniCam, hemiLight, 75, BABYLON.Texture.BILINEAR_SAMPLINGMODE, engine, false);
+var mesh = vls.mesh;
+vls.useCustomMeshPosition = true;
+
+
+// var shad = addShadows(light);
+// var shad = new BABYLON.ShadowGenerator(1024, light);
+// shad.useBlurExponentialShadowMap = true;
+// shad.addShadowCaster(sq);
+// shad.getShadowMap().renderList.push(sq);
+
 
 engine.runRenderLoop(function () {
     scene.render();
