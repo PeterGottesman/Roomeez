@@ -4,8 +4,10 @@
     <title>Roomeez | Browse your style</title>
     <meta charset="UTF-8">
     <script src="js/babylon.custom.js"></script>
-    <script src="https://preview.babylonjs.com/loaders/babylonjs.loaders.min.js"></script>
+    <!-- <script src="https://preview.babylonjs.com/babylon.js"></script> -->
+    <!-- <script src="https://preview.babylonjs.com/loaders/babylonjs.loaders.min.js"></script> -->
     <script src="https://cdn.jsdelivr.net/algoliasearch/3/algoliasearchLite.min.js"></script>
+    <!-- <script src="https://preview.babylonjs.com/gui/babylon.gui.min.js"></script> -->
     <style>
       html, body {
           overflow: hidden;
@@ -19,13 +21,24 @@
 
       #canvas {
           width: 100%;
-          height: 100%;
+          height: 90%;
           touch-action: none;
       }
     </style>
   </head>
   <body>
     <canvas id="canvas"></canvas>
+    <select id="style">
+      <option value="Contemporary/Modern">Contemporary/Modern</option>
+      <option value="Coastal">Coastal</option>
+      <option value="Cottage">Cottage</option>
+      <option value="Traditional">Traditional</option>
+      <option value="Rustic">Rustic</option>
+      <option value="Glam">Glam</option>
+      <option value="Global">Global</option>
+      <option value="Industrial">Industrial</option>
+    </select>
+    <button onclick="regen()">Regenerate</button>
     <script src="js/app.js"></script>
   </body>
 </html>

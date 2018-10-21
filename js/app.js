@@ -1,14 +1,13 @@
 var canvas = document.getElementById("canvas");
 var engine = new BABYLON.Engine(canvas, true);
 
-
 var client = algoliasearch("D02UAI4X7Z", "0e65f8d6c291cf064313d4de6f5dd9eb");
 var index = client.initIndex("models");
 
 renderer = new BABYLON.Engine(canvas, true);
 
 canvas.style.width = '100%';
-canvas.style.height = '100%';
+canvas.style.height = '90%';
 
 function createScene() {
     var scene = new BABYLON.Scene(engine);
@@ -435,7 +434,13 @@ function findAndAdd(class_name, style, loc, rot)
 function replaceFurniture(furniture)
 {
     findAndAdd(furniture._highlightResult.class_name.value).then(
-        function(result) {
-            result.setAbsolutePosition(furniture.getAbsolutePosition());
-        });
+	function(result) {
+	    result.setAbsolutePosition(furniture.getAbsolutePosition());
+	});
+}
+
+function regen()
+{
+    var yourSelect = document.getElementById( "style" );
+    scene = buildLivingRoom(yourSelect.options[ yourSelect.selectedIndex ].value)
 }
