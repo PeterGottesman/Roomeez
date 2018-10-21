@@ -360,11 +360,81 @@ function buildLivingRoom(style) {
     return scene;
 }
 
-function makeDiningTable(style) {
-    var scene = createScene();
-    var uniCam = makeCamera(scene);
-    uniCam.attachControl(canvas, true);
+function vector(x, y, z) {
+    return new BABYLON.Vector3(x, y, z);
 }
+
+var livingroom = [
+    {
+        "class": "Coffee & Cocktail Tables",
+        "loc": vector(0, 0, 0),
+        "rot": vector(0, 0, 0)
+    },
+    {
+        "class": "Area Rugs",
+        "loc": vector(0, 0, 0),
+        "rot": vector(0, Math.PI / 2, 0)
+    },
+    {
+        "class": "Sofas",
+        "loc": vector(0, 0, 0),
+        "rot": vector(0, Math.PI / 2, 0)
+    },
+    {
+        "class": "Sofas",
+        "loc": vector(-1.45, 0, 0),
+        "rot": vector(0, Math.PI / -2, 0)
+    },
+    {
+        "class": "Floor Lamps",
+        "loc": vector(-1.4, 0, -1.45),
+        "rot": vector(0, Math.PI / 2, 0)
+    },
+    {
+        "class": "TV Stands & Entertainment Centers",
+        "loc": vector(-1.4, 0, 1.45),
+        "rot": vector(0, Math.PI / 2, 0)
+    },
+    {
+        "class": "Accent Pillows",
+        "loc": vector(-1.25, .5, -.55),
+        "rot": vector(Math.PI / 3, Math.PI / 3.5, 0)
+    },
+    {
+        "class": "Wall Art",
+        "loc": vector(0, .8, -1.75),
+        "rot": vector(0, 0, 0)
+    },
+    {
+        "class": "End Tables",
+        "loc": vector(-1.4, 0, 1.45),
+        "rot": vector(0, Math.PI / 2, 0)
+    },
+];
+
+var diningroom = [
+    {
+        "class": "Dining Tables",
+        "loc": vector(0, 0, 0),
+        "rot": vector(0, Math.PI / 2, 0)
+    },
+    {
+        "class": "Area Rugs",
+        "loc": vector(0, 0, 0),
+        "rot": vector(0, 0, 0)
+    },
+    {
+        "class": "Table Cloth",
+        "loc": vector(0, 0, 0),
+        "rot": vector(0, 0, 0)
+    },
+    {
+        "class": "Candle Holders",
+        "loc": vector(0, 0, 0),
+        "rot": vector(0, 0, 0)
+    },
+
+];
 
 var scene = buildLivingRoom("Modern", scene);
 
