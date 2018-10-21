@@ -268,9 +268,10 @@ function addFurnishing(furnishing, location, rotation, scene) {
         });
 }
 
-function removeFurnishing(mesh, scene) {
-    var index = furnishings.indexOf(mesh);
+function removeFurnishing(furnishing, scene) {
+    var index = furnishings.indexOf(furnishing);
     if (index == -1) return;
+    var mesh = furnishing.mesh;
 
     mesh.getChildMeshes().forEach(function (mesh) {
         scene.removeMesh(mesh);
@@ -469,8 +470,7 @@ function findFurniture(search, facet_filters)
 
 function findAndAdd(class_name)
 {
-    var hit;
-    findFurniture("", "class_name:"+class_name).then(
+    return findFurniture("", "class_name:"+class_name).then(
 	function(result) {
 	    idx = Math.floor(Math.random() * 19);
 	    hit = result.hits[idx];
@@ -478,5 +478,14 @@ function findAndAdd(class_name)
 			  BABYLON.Vector3.Zero(),
 			  BABYLON.Vector3.Zero(),
 			  scene);
+	    return hit;
+	});
+}
+
+function replaceFurniture(furniture)
+{
+    findAndAdd(furniture._highlightResult.class_name.value).then(
+	function(result) {
+	    result.setAbsolutePosition(furniture.getAbsolutePosition());
 	});
 }
