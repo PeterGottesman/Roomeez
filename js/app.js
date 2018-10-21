@@ -451,5 +451,5 @@ function replaceFurniture(furniture)
 function regen()
 {
     var yourSelect = document.getElementById( "style" );
-    buildLivingRoom(yourSelect.options[ yourSelect.selectedIndex ].value)
+    scene = buildLivingRoom(yourSelect.options[ yourSelect.selectedIndex ].value)
 }
