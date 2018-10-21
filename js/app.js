@@ -265,8 +265,8 @@ function addFurnishing(furnishing, location, rotation, scene, copied=false) {
         "", model, "", scene,
         function (meshes, particles, skeletons) {
             const mesh = meshes[0];
-            mesh.setPositionWithLocalVector(location);
-            mesh.rotation = rotation;
+            mesh.setPositionWithLocalVector(location.clone());
+            mesh.rotation = rotation.clone();
             furnishing.mesh = mesh;
             furnishings.push(furnishing);
         });
