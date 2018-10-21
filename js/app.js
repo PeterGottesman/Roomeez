@@ -306,8 +306,8 @@ function buildLivingRoom(style) {
     for (var i = 0; i < livingroom.length; i++)
     {
 	var class_name = livingroom[i].class_name;
-	var loc = = livingroom[i].loc;
-	var rot = = livingroom[i].rot;
+	var loc = livingroom[i].loc;
+	var rot = livingroom[i].rot;
 	findAndAdd(class_name, loc, rot);
     }
 
