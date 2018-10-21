@@ -340,7 +340,7 @@ var livingroom = [
     },
     {
         "class_name": "Sofas",
-        "loc": vector(0, 0, 0),
+        "loc": vector(1.45, 0, 0),
         "rot": vector(0, Math.PI / 2, 0)
     },
     {
@@ -358,11 +358,11 @@ var livingroom = [
         "loc": vector(-1.4, 0, 1.45),
         "rot": vector(0, Math.PI / 2, 0)
     },
-    {
-        "class_name": "Accent Pillows",
-        "loc": vector(-1.25, .5, -.55),
-        "rot": vector(Math.PI / 3, Math.PI / 3.5, 0)
-    },
+    // {
+    //     "class_name": "Accent Pillows",
+    //     "loc": vector(-1.25, .5, -.55),
+    //     "rot": vector(Math.PI / 3, Math.PI / 3.5, 0)
+    // },
     {
         "class_name": "Wall Art",
         "loc": vector(0, .8, -1.75),
