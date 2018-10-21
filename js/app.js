@@ -451,6 +451,8 @@ function replaceFurniture(furniture)
 function createGUI()
 {
     var style;
+
+    var advancedTexture = BABYLON.GUI.AdvancedDynamicTexture.CreateFullscreenUI("");
     
     var panel = new BABYLON.GUI.StackPanel();
     advancedTexture.addControl(panel);
