@@ -255,14 +255,16 @@ function addDirectLight(name, intensity, angle, scene) {
 
 var furnishings = [];
 
-function addFurnishing(model, location, rotation, scene) {
+function addFurnishing(furnishing, location, rotation, scene) {
+    model = furnishing.glb_url;
     BABYLON.SceneLoader.ImportMesh(
         "", model, "", scene,
         function (meshes, particles, skeletons) {
             const mesh = meshes[0];
             mesh.setPositionWithLocalVector(location);
             mesh.rotation = rotation;
-            furnishings.push(mesh);
+	    furnishing.mesh = mesh;
+            furnishings.push(furnishing);
         });
 }
 
@@ -445,3 +447,36 @@ engine.runRenderLoop(function () {
 window.addEventListener("resize", function () {
     engine.resize();
 });
+
+
+var client = algoliasearch("D02UAI4X7Z", "0e65f8d6c291cf064313d4de6f5dd9eb");
+var index = client.initIndex("models");
+
+function findFurniture(search, facet_filters)
+{
+    const query = {
+	"query": search,
+	"facets": [
+	    "class_names",
+	    "primary_style"
+	],
+	"facetFilters": facet_filters
+    };
+    return index.search(query).then(function(result){
+	return result;
+    });
+}
+
+function findAndAdd(class_name)
+{
+    var hit;
+    findFurniture("", "class_name:"+class_name).then(
+	function(result) {
+	    idx = Math.floor(Math.random() * 19);
+	    hit = result.hits[idx];
+	    addFurnishing(hit,
+			  BABYLON.Vector3.Zero(),
+			  BABYLON.Vector3.Zero(),
+			  scene);
+	});
+}
