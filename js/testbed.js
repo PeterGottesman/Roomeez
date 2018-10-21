@@ -286,7 +286,7 @@ function findAndAdd(class_name)
     findFurniture("", "class_name:"+class_name).then(
 	function(result) {
 	    idx = Math.floor(Math.random() * 19);
-	    hit = result.hit[idx];
+	    hit = result.hits[idx];
 	});
     addFurnishing(hit.glb_url,
 		  BABYLON.Vector3.Zero(),
