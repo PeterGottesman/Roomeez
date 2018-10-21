@@ -357,6 +357,7 @@ function buildLivingRoom(style) {
         uniCam, hemiLight, 75, BABYLON.Texture.BILINEAR_SAMPLINGMODE, engine, false);
     var mesh = vls.mesh;
     vls.useCustomMeshPosition = true;
+    return scene;
 }
 
 function makeDiningTable(style) {
@@ -365,6 +366,7 @@ function makeDiningTable(style) {
     uniCam.attachControl(canvas, true);
 }
 
+var scene = buildLivingRoom("Modern", scene);
 
 engine.runRenderLoop(function () {
     scene.render();
