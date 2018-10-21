@@ -427,7 +427,8 @@ function findFurniture(search, facet_filters)
 
 function findAndAdd(class_name, loc, rot)
 {
-    return findFurniture("", "class_name:"+class_name).then(
+    return findFurniture("",
+			 "class_name:"+class_name).then(
 	function(result) {
 	    idx = Math.floor(Math.random() * 19);
 	    hit = result.hits[idx];
@@ -445,4 +446,53 @@ function replaceFurniture(furniture)
 	function(result) {
 	    result.setAbsolutePosition(furniture.getAbsolutePosition());
 	});
+}
+
+function createGUI()
+{
+    var style;
+    
+    var panel = new BABYLON.GUI.StackPanel();
+    advancedTexture.addControl(panel);
+
+    var addRadio = function(text, parent) {
+	var button = new BABYLON.GUI.RadioButton();
+	button.width = "20px";
+	button.height = "20px";
+	button.color = "white";
+	button.background = "green";
+
+	button.onIsCheckedChangedObservable.add(function(state) {
+	    if (state) {
+		style = text;
+	    }
+	});
+
+	var header = BABYLON.GUI.Control.AddHeader(button, text, "100px", { isHorizontal: true, controlFirst: true });
+	header.height = "30px";
+
+	parent.addControl(header);
+    }
+
+
+    addRadio("Contemporary/Modern", panel);
+    addRadio("Coastal", panel);
+    addRadio("Cottage", panel);
+    addRadio("Traditional", panel);
+    addRadio("Rustic", panel);
+    addRadio("Glam", panel);
+    addRadio("Global", panel);
+    addRadio("Industrial", panel);
+    
+    var menuButton = new BABYLON.GUI.Button.CreateSimpleButton("", "Menu");
+    menuButton.width = 0.2;
+    menuButton.height = "40px";
+    menuButton.background = "grey";
+    // menuButton.verticalAlignment = BABYLON.GUI.Control.VERTICAL_ALIGNMENT_BOTTOM;
+    menuButton.cornerRadius = 5;
+    advancedTexture.addControl(menuButton);
+
+    menuButton.pointerDownAnimation = () => {
+	buildLivingRoom(style);
+    };
 }
