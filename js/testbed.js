@@ -287,11 +287,11 @@ function findAndAdd(class_name)
 	function(result) {
 	    idx = Math.floor(Math.random() * 19);
 	    hit = result.hits[idx];
+	    addFurnishing(hit.glb_url,
+			  BABYLON.Vector3.Zero(),
+			  BABYLON.Vector3.Zero(),
+			  scene);
 	});
-    addFurnishing(hit.glb_url,
-		  BABYLON.Vector3.Zero(),
-		  BABYLON.Vector3.Zero(),
-		  scene);
 }
 
 
