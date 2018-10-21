@@ -7,7 +7,7 @@ var index = client.initIndex("models");
 renderer = new BABYLON.Engine(canvas, true);
 
 canvas.style.width = '100%';
-canvas.style.height = '100%';
+canvas.style.height = '90%';
 
 function createScene() {
     var scene = new BABYLON.Scene(engine);
@@ -448,52 +448,8 @@ function replaceFurniture(furniture)
 	});
 }
 
-function createGUI()
+function regen()
 {
-    var style;
-
-    
-    var panel = new BABYLON.GUI.StackPanel();
-    advancedTexture.addControl(panel);
-
-    var addRadio = function(text, parent) {
-	var button = new BABYLON.GUI.RadioButton();
-	button.width = "20px";
-	button.height = "20px";
-	button.color = "white";
-	button.background = "green";
-
-	button.onIsCheckedChangedObservable.add(function(state) {
-	    if (state) {
-		style = text;
-	    }
-	});
-
-	var header = BABYLON.GUI.Control.AddHeader(button, text, "100px", { isHorizontal: true, controlFirst: true });
-	header.height = "30px";
-
-	parent.addControl(header);
-    }
-
-
-    addRadio("Contemporary/Modern", panel);
-    addRadio("Coastal", panel);
-    addRadio("Cottage", panel);
-    addRadio("Traditional", panel);
-    addRadio("Rustic", panel);
-    addRadio("Glam", panel);
-    addRadio("Global", panel);
-    addRadio("Industrial", panel);
-    
-    var menuButton = new BABYLON.GUI.Button.CreateSimpleButton("", "Menu");
-    menuButton.width = 0.2;
-    menuButton.height = "40px";
-    menuButton.background = "grey";
-    // menuButton.verticalAlignment = BABYLON.GUI.Control.VERTICAL_ALIGNMENT_BOTTOM;
-    menuButton.cornerRadius = 5;
-    advancedTexture.addControl(menuButton);
-
-    menuButton.pointerDownAnimation = () => {
-	buildLivingRoom(style);
-    };
+    var yourSelect = document.getElementById( "style" );
+    buildLivingRoom(yourSelect.options[ yourSelect.selectedIndex ].value)
 }
