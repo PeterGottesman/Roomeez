@@ -203,7 +203,7 @@ function addFurnishing(model, location, rotation, scene) {
             const mesh = meshes[0];
             mesh.setPositionWithLocalVector(location);
             mesh.rotation = rotation;
-	    localAxes(mesh);
+	    localAxes(1, mesh);
             furnishings.push(mesh);
         });
 }
