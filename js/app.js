@@ -424,7 +424,7 @@ function findAndAdd(class_name, style, loc, rot)
 {
     return findFurniture("", [["class_name:"+class_name], ["primary_style:"+style]]).then(
         function(result) {
-	    if (results.hits.length == 0) {
+	    if (result.hits.length == 0) {
 		return findAndAdd(class_name, "", loc, rot);
 	    }
             idx = Math.floor(Math.random() * (result.hits.length -1));
