@@ -1,5 +1,10 @@
 var canvas = document.getElementById("canvas");
 var engine = new BABYLON.Engine(canvas, true);
+
+
+var client = algoliasearch("D02UAI4X7Z", "0e65f8d6c291cf064313d4de6f5dd9eb");
+var index = client.initIndex("models");
+
 renderer = new BABYLON.Engine(canvas, true);
 
 canvas.style.width = '100%';
@@ -404,9 +409,6 @@ window.addEventListener("resize", function () {
     engine.resize();
 });
 
-
-var client = algoliasearch("D02UAI4X7Z", "0e65f8d6c291cf064313d4de6f5dd9eb");
-var index = client.initIndex("models");
 
 function findFurniture(search, facet_filters)
 {
