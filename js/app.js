@@ -302,59 +302,14 @@ function buildLivingRoom(style) {
     var hemiLight = addHemiLight('hemi0', 1.1, new BABYLON.Vector3(0, 2, 2), scene);
     // Build 5 / 2.5 / 5 room
     var room = buildRoom(4, 2, 3.5, scene);
-    // Table
-    addFurnishing("http://img.wfrcdn.com/docresources/0/139/1396970.glb",
-        new BABYLON.Vector3(0, 0, 0),
-        new BABYLON.Vector3(0, Math.PI / 2, 0),
-        scene);
-    // Rug
-    addFurnishing("http://img.wfrcdn.com/docresources/37306/108/1087161.glb",
-        new BABYLON.Vector3(0, 0, 0),
-        new BABYLON.Vector3(0, Math.PI / 2, 0),
-        scene);
 
-    // Sofa
-    addFurnishing("http://img.wfrcdn.com/docresources/36985/114/1140392.glb",
-        new BABYLON.Vector3(-1.45, 0, 0),
-        new BABYLON.Vector3(0, Math.PI / -2, 0),
-        scene);
-
-    // Sofa
-    addFurnishing("http://img.wfrcdn.com/docresources/36985/114/1140392.glb",
-        new BABYLON.Vector3(1.45, 0, 0),
-        new BABYLON.Vector3(0, Math.PI / 2, 0),
-        scene);
-
-    // Light
-    addFurnishing("http://img.wfrcdn.com/docresources/0/142/1425254.glb",
-        new BABYLON.Vector3(-1.4, 0, -1.45),
-        new BABYLON.Vector3(0, Math.PI, 0),
-        scene);
-
-    // TV Stand
-    addFurnishing("http://img.wfrcdn.com/docresources/30808/107/1077084.glb",
-        new BABYLON.Vector3(0, 0, -1.55),
-        new BABYLON.Vector3(0, 0, 0),
-        scene);
-
-    // Throw Pillow Right
-    addFurnishing("http://img.wfrcdn.com/docresources/25210/83/831740.glb",
-        new BABYLON.Vector3(-1.25, .5, -.55),
-        new BABYLON.Vector3(Math.PI / 3, Math.PI / -3.5, 0),
-        scene);
-
-    // Wall Art
-    addFurnishing("http://img.wfrcdn.com/docresources/33808/118/1184529.glb",
-        new BABYLON.Vector3(0, .8, -1.75),
-        new BABYLON.Vector3(0, 0, 0),
-        scene);
-
-    // End Table
-    addFurnishing("http://img.wfrcdn.com/docresources/44325/121/1213544.glb",
-        new BABYLON.Vector3(-1.4, 0, 1.45),
-        new BABYLON.Vector3(0, Math.PI / 2, 0),
-        scene);
-
+    for (var i = 0; i < livingroom.length; i++)
+    {
+	var class_name = livingroom[i].class_name;
+	var loc = = livingroom[i].loc;
+	var rot = = livingroom[i].rot;
+	findAndAdd(class_name, loc, rot);
+    }
 
     var vls = new BABYLON.VolumetricLightScatteringPostProcess('vls', {postProcessRatio: 1.0, passRatio: 0.5},
         uniCam, hemiLight, 75, BABYLON.Texture.BILINEAR_SAMPLINGMODE, engine, false);
@@ -369,47 +324,47 @@ function vector(x, y, z) {
 
 var livingroom = [
     {
-        "class": "Coffee & Cocktail Tables",
+        "class_name": "Coffee & Cocktail Tables",
         "loc": vector(0, 0, 0),
         "rot": vector(0, 0, 0)
     },
     {
-        "class": "Area Rugs",
+        "class_name": "Area Rugs",
         "loc": vector(0, 0, 0),
         "rot": vector(0, Math.PI / 2, 0)
     },
     {
-        "class": "Sofas",
+        "class_name": "Sofas",
         "loc": vector(0, 0, 0),
         "rot": vector(0, Math.PI / 2, 0)
     },
     {
-        "class": "Sofas",
+        "class_name": "Sofas",
         "loc": vector(-1.45, 0, 0),
         "rot": vector(0, Math.PI / -2, 0)
     },
     {
-        "class": "Floor Lamps",
+        "class_name": "Floor Lamps",
         "loc": vector(-1.4, 0, -1.45),
         "rot": vector(0, Math.PI / 2, 0)
     },
     {
-        "class": "TV Stands & Entertainment Centers",
+        "class_name": "TV Stands & Entertainment Centers",
         "loc": vector(-1.4, 0, 1.45),
         "rot": vector(0, Math.PI / 2, 0)
     },
     {
-        "class": "Accent Pillows",
+        "class_name": "Accent Pillows",
         "loc": vector(-1.25, .5, -.55),
         "rot": vector(Math.PI / 3, Math.PI / 3.5, 0)
     },
     {
-        "class": "Wall Art",
+        "class_name": "Wall Art",
         "loc": vector(0, .8, -1.75),
         "rot": vector(0, 0, 0)
     },
     {
-        "class": "End Tables",
+        "class_name": "End Tables",
         "loc": vector(-1.4, 0, 1.45),
         "rot": vector(0, Math.PI / 2, 0)
     },
@@ -417,22 +372,22 @@ var livingroom = [
 
 var diningroom = [
     {
-        "class": "Dining Tables",
+        "class_name": "Dining Tables",
         "loc": vector(0, 0, 0),
         "rot": vector(0, Math.PI / 2, 0)
     },
     {
-        "class": "Area Rugs",
+        "class_name": "Area Rugs",
         "loc": vector(0, 0, 0),
         "rot": vector(0, 0, 0)
     },
     {
-        "class": "Table Cloth",
+        "class_name": "Table Cloth",
         "loc": vector(0, 0, 0),
         "rot": vector(0, 0, 0)
     },
     {
-        "class": "Candle Holders",
+        "class_name": "Candle Holders",
         "loc": vector(0, 0, 0),
         "rot": vector(0, 0, 0)
     },
@@ -468,15 +423,15 @@ function findFurniture(search, facet_filters)
     });
 }
 
-function findAndAdd(class_name)
+function findAndAdd(class_name, loc, rot)
 {
     return findFurniture("", "class_name:"+class_name).then(
 	function(result) {
 	    idx = Math.floor(Math.random() * 19);
 	    hit = result.hits[idx];
 	    addFurnishing(hit,
-			  BABYLON.Vector3.Zero(),
-			  BABYLON.Vector3.Zero(),
+			  loc,
+			  rot,
 			  scene);
 	    return hit;
 	});
