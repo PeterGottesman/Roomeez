@@ -424,7 +424,7 @@ function findAndAdd(class_name, style, loc, rot)
 {
     return findFurniture("", [["class_name:"+class_name], ["primary_style:"+style]]).then(
         function(result) {
-            idx = Math.floor(Math.random() * 19);
+            idx = Math.floor(Math.random() * (results.hits.length -1));
             hit = result.hits[idx];
             addFurnishing(hit, loc, rot, scene);
             return hit;
