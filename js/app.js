@@ -399,7 +399,7 @@ var diningroom = [
 ];
 
 var scene = buildLivingRoom("Modern", scene);
-createGUI()
+var advancedTexture = BABYLON.GUI.AdvancedDynamicTexture.CreateFullscreenUI("UI");
 
 engine.runRenderLoop(function () {
     scene.render();
@@ -452,7 +452,6 @@ function createGUI()
 {
     var style;
 
-    var advancedTexture = BABYLON.GUI.AdvancedDynamicTexture.CreateFullscreenUI("");
     
     var panel = new BABYLON.GUI.StackPanel();
     advancedTexture.addControl(panel);
