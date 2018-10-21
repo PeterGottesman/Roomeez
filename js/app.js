@@ -360,7 +360,9 @@ function buildLivingRoom(style) {
 }
 
 function makeDiningTable(style) {
-
+    var scene = createScene();
+    var uniCam = makeCamera(scene);
+    uniCam.attachControl(canvas, true);
 }
 
 
