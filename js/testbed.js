@@ -280,6 +280,20 @@ function findFurniture(search, facet_filters)
     });
 }
 
+function findAndAdd(class_name)
+{
+    var hit;
+    findFurniture("", "class_name:"+class_name).then(
+	function(result) {
+	    idx = Math.floor(Math.random() * 19);
+	    hit = result.hit[idx];
+	});
+    addFurnishing(hit.glb_url,
+		  BABYLON.Vector3.Zero(),
+		  BABYLON.Vector3.Zero(),
+		  scene);
+}
+
 
 function localAxes(size, mesh) {
     var pilot_local_axisX = BABYLON.Mesh.CreateLines("pilot_local_axisX", [
