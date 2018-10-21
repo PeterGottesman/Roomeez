@@ -2,8 +2,8 @@ var canvas = document.getElementById("canvas");
 var engine = new BABYLON.Engine(canvas, true);
 renderer = new BABYLON.Engine(canvas, true);
 
-canvas.style.width = '60%';
-canvas.style.height = '60%';
+canvas.style.width = '100%';
+canvas.style.height = '100%';
 
 function createScene() {
     var scene = new BABYLON.Scene(engine);
@@ -208,17 +208,17 @@ function buildRoom(width, height, depth, scene) {
 
     var mat2 = new BABYLON.StandardMaterial(backWall, scene);
     mat2.diffuseTexture = new BABYLON.Texture(bwCOLOR, scene);
-    mat2.diffuseTexture.uScale = scale;
-    mat2.diffuseTexture.vScale = scale;
+    mat2.diffuseTexture.uScale = 2;
+    mat2.diffuseTexture.vScale = 2;
     mat2.bumpTexture = new BABYLON.Texture(bwNORM, scene);
-    mat2.bumpTexture.uScale = scale;
-    mat2.bumpTexture.vScale = scale;
+    mat2.bumpTexture.uScale = 2;
+    mat2.bumpTexture.vScale = 2;
     mat2.ambientTexture = new BABYLON.Texture(bwOCC, scene);
-    mat2.ambientTexture.uScale = scale;
-    mat2.ambientTexture.vScale = scale;
+    mat2.ambientTexture.uScale = 2;
+    mat2.ambientTexture.vScale = 2;
     mat2.metallicRoughnessTexture = new BABYLON.Texture(bwROUGH, scene);
-    mat2.metallicRoughnessTexture.uScale = scale;
-    mat2.metallicRoughnessTexture.vScale = scale;
+    mat2.metallicRoughnessTexture.uScale = 2;
+    mat2.metallicRoughnessTexture.vScale = 2;
     mat2.specularPower = 10000.0;
 
     backWall.material = mat2;
@@ -286,70 +286,84 @@ function addShadows(light) {
     return shadowGenerator
 }
 
-var scene = createScene();
-var uniCam = makeCamera(scene);
-uniCam.attachControl(canvas, true);
-// var orb = addGlowingOrb(scene);
+function buildLivingRoom(style) {
 
-//var light = addPointLight("pointLight", .2, new BABYLON.Vector3(0, 2, 2), scene);
-var light0 = addPointLight("point0", .2, new BABYLON.Vector3(2, 2, 2), scene);
-var light1 = addPointLight("point1", .2, new BABYLON.Vector3(-2, 2, 2), scene);
-var hemiLight = addHemiLight('hemi0', 1.1, new BABYLON.Vector3(0, 2, 2), scene);
-// Build 5 / 2.5 / 5 room
-var room = buildRoom(4, 2, 4, scene);
-// Table
-addFurnishing("http://img.wfrcdn.com/docresources/0/139/1396970.glb",
-    new BABYLON.Vector3(0, 0, 0),
-    new BABYLON.Vector3(0, Math.PI / 2, 0),
-    scene);
-// Rug
-addFurnishing("http://img.wfrcdn.com/docresources/37306/108/1087161.glb",
-    new BABYLON.Vector3(0, 0, 0),
-    new BABYLON.Vector3(0, Math.PI / 2, 0),
-    scene);
+    var scene = createScene();
+    var uniCam = makeCamera(scene);
+    uniCam.attachControl(canvas, true);
+    // var orb = addGlowingOrb(scene);
 
-// Sofa
-addFurnishing("http://img.wfrcdn.com/docresources/36985/114/1140392.glb",
-    new BABYLON.Vector3(-1.45, 0, 0),
-    new BABYLON.Vector3(0, Math.PI / -2, 0),
-    scene);
+    //var light = addPointLight("pointLight", .2, new BABYLON.Vector3(0, 2, 2), scene);
+    var light0 = addPointLight("point0", .2, new BABYLON.Vector3(2, 2, 2), scene);
+    var light1 = addPointLight("point1", .2, new BABYLON.Vector3(-2, 2, 2), scene);
+    var hemiLight = addHemiLight('hemi0', 1.1, new BABYLON.Vector3(0, 2, 2), scene);
+    // Build 5 / 2.5 / 5 room
+    var room = buildRoom(4, 2, 3.5, scene);
+    // Table
+    addFurnishing("http://img.wfrcdn.com/docresources/0/139/1396970.glb",
+        new BABYLON.Vector3(0, 0, 0),
+        new BABYLON.Vector3(0, Math.PI / 2, 0),
+        scene);
+    // Rug
+    addFurnishing("http://img.wfrcdn.com/docresources/37306/108/1087161.glb",
+        new BABYLON.Vector3(0, 0, 0),
+        new BABYLON.Vector3(0, Math.PI / 2, 0),
+        scene);
 
-// Sofa
-addFurnishing("http://img.wfrcdn.com/docresources/36985/114/1140392.glb",
-    new BABYLON.Vector3(1.45, 0, 0),
-    new BABYLON.Vector3(0, Math.PI / 2, 0),
-    scene);
+    // Sofa
+    addFurnishing("http://img.wfrcdn.com/docresources/36985/114/1140392.glb",
+        new BABYLON.Vector3(-1.45, 0, 0),
+        new BABYLON.Vector3(0, Math.PI / -2, 0),
+        scene);
 
-// Light
-addFurnishing("http://img.wfrcdn.com/docresources/0/142/1425254.glb",
-    new BABYLON.Vector3(-1.4, 0, -1.45),
-    new BABYLON.Vector3(0, Math.PI, 0),
-    scene);
+    // Sofa
+    addFurnishing("http://img.wfrcdn.com/docresources/36985/114/1140392.glb",
+        new BABYLON.Vector3(1.45, 0, 0),
+        new BABYLON.Vector3(0, Math.PI / 2, 0),
+        scene);
 
-// TV Stand
-addFurnishing("http://img.wfrcdn.com/docresources/37306/108/1087335.glb",
-    new BABYLON.Vector3(0, 0, -1.45),
-    new BABYLON.Vector3(0, 0, 0),
-    scene);
+    // Light
+    addFurnishing("http://img.wfrcdn.com/docresources/0/142/1425254.glb",
+        new BABYLON.Vector3(-1.4, 0, -1.45),
+        new BABYLON.Vector3(0, Math.PI, 0),
+        scene);
 
-// Throw Pillow Left
-addFurnishing("http://img.wfrcdn.com/docresources/25210/83/831740.glb",
-    new BABYLON.Vector3(-1.4, .5, -.25),
-    new BABYLON.Vector3(Math.PI/-3, Math.PI/-4, 0),
-    scene);
+    // TV Stand
+    addFurnishing("http://img.wfrcdn.com/docresources/30808/107/1077084.glb",
+        new BABYLON.Vector3(0, 0, -1.55),
+        new BABYLON.Vector3(0, 0, 0),
+        scene);
+
+    // Throw Pillow Right
+    addFurnishing("http://img.wfrcdn.com/docresources/25210/83/831740.glb",
+        new BABYLON.Vector3(-1.25, .5, -.55),
+        new BABYLON.Vector3(Math.PI / 3, Math.PI / -3.5, 0),
+        scene);
+
+    // Wall Art
+    addFurnishing("http://img.wfrcdn.com/docresources/33808/118/1184529.glb",
+        new BABYLON.Vector3(0, .8, -1.75),
+        new BABYLON.Vector3(0, 0, 0),
+        scene);
+
+    // End Table
+    addFurnishing("http://img.wfrcdn.com/docresources/44325/121/1213544.glb",
+        new BABYLON.Vector3(-1.4, 0, 1.45),
+        new BABYLON.Vector3(0, Math.PI / 2, 0),
+        scene);
 
 
-var vls = new BABYLON.VolumetricLightScatteringPostProcess('vls', { postProcessRatio: 1.0, passRatio: 0.5 },
-    uniCam, hemiLight, 75, BABYLON.Texture.BILINEAR_SAMPLINGMODE, engine, false);
-var mesh = vls.mesh;
-vls.useCustomMeshPosition = true;
+    var vls = new BABYLON.VolumetricLightScatteringPostProcess('vls', {postProcessRatio: 1.0, passRatio: 0.5},
+        uniCam, hemiLight, 75, BABYLON.Texture.BILINEAR_SAMPLINGMODE, engine, false);
+    var mesh = vls.mesh;
+    vls.useCustomMeshPosition = true;
+}
 
-
-// var shad = addShadows(light);
-// var shad = new BABYLON.ShadowGenerator(1024, light);
-// shad.useBlurExponentialShadowMap = true;
-// shad.addShadowCaster(sq);
-// shad.getShadowMap().renderList.push(sq);
+function makeDiningTable(style) {
+    var scene = createScene();
+    var uniCam = makeCamera(scene);
+    uniCam.attachControl(canvas, true);
+}
 
 
 engine.runRenderLoop(function () {
