@@ -260,7 +260,7 @@ function addDirectLight(name, intensity, angle, scene) {
 
 var furnishings = [];
 
-function addFurnishing(furnishing, location, rotation, scene) {
+function addFurnishing(furnishing, location, rotation, scene, copied=false) {
     model = furnishing.glb_url;
     BABYLON.SceneLoader.ImportMesh(
         "", model, "", scene,
@@ -268,7 +268,7 @@ function addFurnishing(furnishing, location, rotation, scene) {
             const mesh = meshes[0];
             mesh.setPositionWithLocalVector(location);
             mesh.rotation = rotation;
-	    furnishing.mesh = mesh;
+            furnishing.mesh = mesh;
             furnishings.push(furnishing);
         });
 }
@@ -310,10 +310,11 @@ function buildLivingRoom(style) {
 
     for (var i = 0; i < livingroom.length; i++)
     {
-	var class_name = livingroom[i].class_name;
-	var loc = livingroom[i].loc;
-	var rot = livingroom[i].rot;
-	findAndAdd(class_name, loc, rot);
+        var class_name = livingroom[i].class_name;
+        var loc = livingroom[i].loc;
+        var rot = livingroom[i].rot;
+        findAndAdd(class_name,
+            style, loc, rot);
     }
 
     var vls = new BABYLON.VolumetricLightScatteringPostProcess('vls', {postProcessRatio: 1.0, passRatio: 0.5},
@@ -339,41 +340,36 @@ var livingroom = [
         "rot": vector(0, Math.PI / 2, 0)
     },
     {
-        "class_name": "Sofas",
-        "loc": vector(1.45, 0, 0),
-        "rot": vector(0, Math.PI / 2, 0)
-    },
-    {
-        "class_name": "Sofas",
-        "loc": vector(-1.45, 0, 0),
-        "rot": vector(0, Math.PI / -2, 0)
-    },
-    {
         "class_name": "Floor Lamps",
         "loc": vector(-1.4, 0, -1.45),
         "rot": vector(0, Math.PI / 2, 0)
     },
     {
-        "class_name": "TV Stands & Entertainment Centers",
-        "loc": vector(-1.4, 0, 1.45),
-        "rot": vector(0, Math.PI / 2, 0)
+        "class_name": "Indoor Fireplaces",
+        "loc": vector(0, 0, -1.45),
+        "rot": vector(0, 0, 0)
     },
-    // {
-    //     "class_name": "Accent Pillows",
-    //     "loc": vector(-1.25, .5, -.55),
-    //     "rot": vector(Math.PI / 3, Math.PI / 3.5, 0)
-    // },
     {
         "class_name": "Wall Art",
         "loc": vector(0, .8, -1.75),
         "rot": vector(0, 0, 0)
     },
     {
-        "class_name": "End Tables",
+        "class_name": "Faux Plants and Trees",
         "loc": vector(-1.4, 0, 1.45),
         "rot": vector(0, Math.PI / 2, 0)
     },
-];
+    {
+        "class_name": "Sofas",
+        "loc": vector(1.45, 0, 0),
+        "rot": vector(0, Math.PI / 2, 0),
+    },
+    {
+        "class_name": "Sofas",
+        "loc": vector(-1.45, 0, 0),
+        "rot": vector(0, Math.PI / -2, 0)
+    }
+    ];
 
 var diningroom = [
     {
@@ -399,7 +395,7 @@ var diningroom = [
 
 ];
 
-var scene = buildLivingRoom("Modern", scene);
+var scene = buildLivingRoom("Contemporary");
 
 engine.runRenderLoop(function () {
     scene.render();
@@ -413,36 +409,33 @@ window.addEventListener("resize", function () {
 function findFurniture(search, facet_filters)
 {
     const query = {
-	"query": search,
-	"facets": [
-	    "class_names",
-	    "primary_style"
-	],
-	"facetFilters": facet_filters
+        "query": search,
+        "facets": [
+            "class_name",
+            "primary_style"
+        ],
+        "facetFilters": facet_filters
     };
     return index.search(query).then(function(result){
-	return result;
+        return result;
     });
 }
 
-function findAndAdd(class_name, loc, rot)
+function findAndAdd(class_name, style, loc, rot)
 {
-    return findFurniture("", "class_name:"+class_name).then(
-	function(result) {
-	    idx = Math.floor(Math.random() * 19);
-	    hit = result.hits[idx];
-	    addFurnishing(hit,
-			  loc,
-			  rot,
-			  scene);
-	    return hit;
-	});
+    return findFurniture("", [["class_name:"+class_name], ["primary_style:"+style]]).then(
+        function(result) {
+            idx = Math.floor(Math.random() * 19);
+            hit = result.hits[idx];
+            addFurnishing(hit, loc, rot, scene);
+            return hit;
+        });
 }
 
 function replaceFurniture(furniture)
 {
     findAndAdd(furniture._highlightResult.class_name.value).then(
-	function(result) {
-	    result.setAbsolutePosition(furniture.getAbsolutePosition());
-	});
+        function(result) {
+            result.setAbsolutePosition(furniture.getAbsolutePosition());
+        });
 }
