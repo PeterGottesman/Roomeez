@@ -260,3 +260,17 @@ engine.runRenderLoop(function () {
 window.addEventListener("resize", function () {
     engine.resize();
 });
+
+var client = algoliasearch("D02UAI4X7Z", "0e65f8d6c291cf064313d4de6f5dd9eb");
+var index = client.initIndex("models");
+
+function findFurniture(search, facets)
+{
+    const query = {
+	"query": search,
+	"facets": facets
+    };
+    return index.search(query).then(function(result){
+	return result;
+    });
+}
