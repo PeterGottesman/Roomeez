@@ -422,7 +422,7 @@ function findFurniture(search, facet_filters)
 
 function findAndAdd(class_name, style, loc, rot)
 {
-    return findFurniture("", [["class_name:"+class_name], ["primary_style:"+style]]).then(
+    return findFurniture(style, [["class_name:"+class_name]]).then(
         function(result) {
 	    if (result.hits.length == 0) {
 		return findAndAdd(class_name, "", loc, rot);
