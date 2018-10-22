@@ -1,17 +1,14 @@
-var canvas = document.getElementById("canvas");
-var engine = new BABYLON.Engine(canvas, true);
+canvas = document.getElementById("canvas");
+engine = new BABYLON.Engine(canvas, true);
 
 var client = algoliasearch("D02UAI4X7Z", "0e65f8d6c291cf064313d4de6f5dd9eb");
 var index = client.initIndex("models");
-
-renderer = new BABYLON.Engine(canvas, true);
 
 canvas.style.width = '100%';
 canvas.style.height = '90%';
 
 function createScene() {
-    var scene = new BABYLON.Scene(engine);
-    return scene;
+    return new BABYLON.Scene(engine);
 }
 
 function makeCamera(scene) {
@@ -257,14 +254,14 @@ function addDirectLight(name, intensity, angle, scene) {
     return light;
 }
 
-var furnishings = [];
+//furnishings = [];
 
-function addFurnishing(furnishing, location, rotation, scene, copied=false) {
-    model = furnishing.glb_url;
+function addFurnishing(furnishing, location, rotation, scene) {
+    let model = furnishing.glb_url;
     BABYLON.SceneLoader.ImportMesh(
         "", model, "", scene,
         function (meshes, particles, skeletons) {
-            const mesh = meshes[0];
+            let mesh = meshes[0];
             mesh.setPositionWithLocalVector(location.clone());
             mesh.rotation = rotation.clone();
             furnishing.mesh = mesh;
@@ -274,7 +271,7 @@ function addFurnishing(furnishing, location, rotation, scene, copied=false) {
 
 function removeFurnishing(furnishing, scene) {
     var index = furnishings.indexOf(furnishing);
-    if (index == -1) return;
+    if (index === -1) return;
     var mesh = furnishing.mesh;
 
     mesh.getChildMeshes().forEach(function (mesh) {
@@ -293,28 +290,28 @@ function addShadows(light) {
     return shadowGenerator
 }
 
-function buildLivingRoom(style) {
+async function buildLivingRoom(style) {
 
-    var scene = createScene();
-    var uniCam = makeCamera(scene);
+    let scene = createScene();
+    let uniCam = makeCamera(scene);
     uniCam.attachControl(canvas, true);
-    // var orb = addGlowingOrb(scene);
 
-    //var light = addPointLight("pointLight", .2, new BABYLON.Vector3(0, 2, 2), scene);
-    var light0 = addPointLight("point0", .2, new BABYLON.Vector3(2, 2, 2), scene);
-    var light1 = addPointLight("point1", .2, new BABYLON.Vector3(-2, 2, 2), scene);
-    var hemiLight = addHemiLight('hemi0', 1.1, new BABYLON.Vector3(0, 2, 2), scene);
+    let light0 = addPointLight("point0", .2, new BABYLON.Vector3(2, 2, 2), scene);
+    let light1 = addPointLight("point1", .2, new BABYLON.Vector3(-2, 2, 2), scene);
+    let hemiLight = addHemiLight('hemi0', 1.1, new BABYLON.Vector3(0, 2, 2), scene);
     // Build 5 / 2.5 / 5 room
-    var room = buildRoom(4, 2, 3.5, scene);
+    //let room =
+    buildRoom(4, 2, 3.5, scene);
 
     for (var i = 0; i < livingroom.length; i++)
     {
-        var class_name = livingroom[i].class_name;
-        var loc = livingroom[i].loc;
-        var rot = livingroom[i].rot;
+        let class_name = livingroom[i].class_name;
+        let loc = livingroom[i].loc;
+        let rot = livingroom[i].rot;
         findAndAdd(class_name,
-            style, loc, rot);
+            style, loc, rot, scene);
     }
+
 
     var vls = new BABYLON.VolumetricLightScatteringPostProcess('vls', {postProcessRatio: 1.0, passRatio: 0.5},
         uniCam, hemiLight, 75, BABYLON.Texture.BILINEAR_SAMPLINGMODE, engine, false);
@@ -394,17 +391,6 @@ var diningroom = [
 
 ];
 
-var scene = buildLivingRoom("Contemporary");
-
-engine.runRenderLoop(function () {
-    scene.render();
-});
-
-window.addEventListener("resize", function () {
-    engine.resize();
-});
-
-
 function findFurniture(search, facet_filters)
 {
     const query = {
@@ -420,15 +406,15 @@ function findFurniture(search, facet_filters)
     });
 }
 
-function findAndAdd(class_name, style, loc, rot)
+function findAndAdd(class_name, style, loc, rot, scene)
 {
     return findFurniture(style, [["class_name:"+class_name]]).then(
         function(result) {
-	    if (result.hits.length == 0) {
+	    if (result.hits.length === 0) {
 		return findAndAdd(class_name, "", loc, rot);
 	    }
-            idx = Math.floor(Math.random() * (result.hits.length -1));
-            hit = result.hits[idx];
+            let idx = Math.floor(Math.random() * (result.hits.length -1));
+            let hit = result.hits[idx];
             addFurnishing(hit, loc, rot, scene);
             return hit;
         });
@@ -442,8 +428,38 @@ function replaceFurniture(furniture)
 	});
 }
 
-function regen()
-{
-    var yourSelect = document.getElementById( "style" );
-    scene = buildLivingRoom(yourSelect.options[ yourSelect.selectedIndex ].value)
+async function makeEngine() {
+    return new BABYLON.Engine(canvas, true);
 }
+
+async function delEngine() {
+    engine.dispose()
+}
+
+async function regen()
+{
+    engine = await makeEngine();
+    furnishings = [];
+    var yourSelect = document.getElementById( "style" );
+    const scene = await buildLivingRoom(yourSelect.options[ yourSelect.selectedIndex ].value);
+    return scene;
+}
+
+async function looper() {
+    engine.runRenderLoop(function () {
+        mainScene.render();
+    });
+
+    window.addEventListener("resize", function () {
+        engine.resize();
+    });
+}
+
+async function main() {
+    await engine.stopRenderLoop();
+    await delEngine();
+    mainScene = await regen();
+    await looper();
+}
+var furnishings = [];
+var mainScene = createScene();
